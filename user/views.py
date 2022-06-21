@@ -13,8 +13,8 @@ import json
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, AllowAny
 from rest_framework.authtoken.models import Token
 
-# Create your views here.
 
 @api_view(['GET'])
+@permission_classes((AllowAny,))
 def index(request):
     return Response({'path': 'auth/'})
