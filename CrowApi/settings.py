@@ -24,26 +24,36 @@ SECRET_KEY = 'django-insecure-m%4rrbx8vv)-+npj+r)v1b-m#m^n!8ysa)wmyo!jl0ox&==_48
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    '192.168.8.105',
+    'localhost',
+    '192.168.43.64'
+]
 
 AUTH_USER_MODEL = "user.User"
 
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'django.contrib.gis',
     'corsheaders',
+
     'rest_framework',
     'rest_framework.authtoken',
 
     'user',
     'package',
     'vehicle',
+    'track'
 ]
 
 REST_FRAMEWORK = {
@@ -91,19 +101,40 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'CrowApi.wsgi.application'
+# WSGI_APPLICATION = 'CrowApi.wsgi.application'
+ASGI_APPLICATION = 'CrowApi.asgi.application'
 
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
+#
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'HOST': 'localhost',
+        'NAME': 'stage',
+        'USER': 'postgres',
+        'PASSWORD': '5und4y',
+        'PORT': 5432
+    },
 }
 
+CHANNEL_LAYERS = {
+    'default': {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1",6379)]
+        }
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

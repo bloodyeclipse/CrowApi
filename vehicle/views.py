@@ -6,6 +6,8 @@ import json
 from rest_framework.generics import (GenericAPIView)
 from rest_framework.views import APIView
 from rest_framework.authentication import TokenAuthentication
+
+from user.decorators import allowed_groups
 from .serializers import VehicleSerializer, FleetSerializer, VehicleImageSerializer
 from .models import *
 
@@ -26,6 +28,7 @@ class VehicleView(APIView):
         return Response(status=HTTP_204_NO_CONTENT)
 
     @permission_classes((IsAuthenticated,))
+    @allowed_groups(['Manager'])
     def post(self, request):
         serializer = VehicleSerializer(data=request.data)
         if not serializer.is_valid(raise_exception=True):
@@ -75,6 +78,7 @@ class VehicleImages(APIView):
         return Response(status=HTTP_204_NO_CONTENT)
 
     @permission_classes((IsAuthenticated,))
+    @allowed_groups(['Manager'])
     def delete(self, request, uid):
         if not VehicleImage.objects.filter(uid=uid).exists():
             return Response(status=HTTP_404_NOT_FOUND)

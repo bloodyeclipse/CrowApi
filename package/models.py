@@ -1,4 +1,6 @@
+from email.policy import default
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 import uuid
 from django.conf.global_settings import AUTH_USER_MODEL
 
@@ -51,6 +53,6 @@ class PackageImage(models.Model):
     uid = models.UUIDField(default=uuid.uuid4, auto_created=True, null=False, blank=False)
     package = models.ForeignKey(Package, on_delete=models.CASCADE)
     description = models.CharField(max_length=35, default="", null=True, blank=True)
-
+    image = models.ImageField(_('package img'), upload_to="packages", default="package.png")
     def __str__(self):
         return self.package.name

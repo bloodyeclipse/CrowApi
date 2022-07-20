@@ -14,8 +14,7 @@ class Device(models.Model):
     def __str__(self):
         return self.code
 
-
-class DeviceLocation(models.Models):
+class DeviceLocation(models.Model):
     uid = models.UUIDField(default=uuid.uuid4, auto_created=True, null=False, blank=False, unique=True)
     device = models.ForeignKey(Device, on_delete=models.DO_NOTHING)
     latitude = models.CharField(default="", max_length=50, null=False, blank=False)
