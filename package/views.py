@@ -10,6 +10,7 @@ from .serializers import *
 from .models import *
 from user.decorators import allowed_groups
 
+
 @api_view(['GET'])
 def index(request):
     return Response({"path": "packages/"})
@@ -18,7 +19,7 @@ def index(request):
 class PackageTypeList(ListAPIView):
     queryset = PackageType.objects.all()
     serializer_class = PackageTypeSerializer
-    permission_classes = (AllowAny,IsAuthenticated,)
+    permission_classes = (AllowAny, IsAuthenticated,)
     pagination_class = PageNumberPagination
 
 
@@ -81,32 +82,35 @@ class PackageView(APIView):
         serializer.save()
         return Response(serializer.data)
 
+
 class PackageImages(APIView):
     @permission_classes((IsAuthenticated,))
     @allowed_groups(['Manager'])
     def post(request):
         print(request)
         return Response({})
-    
+
     @permission_classes((IsAuthenticated,))
-    def get(self,request,uid):
+    def get(self, request, uid):
         pack = Package.objects.get(uid=uid)
         if not PackageImage.objects.filter(package=pack).exists():
             return Response(status=HTTP_204_NO_CONTENT)
         images = PackageImage.objects.filter(package=pack)
-        serializer = PackageImageSerializer(instance=images,many=True)
+        serializer = PackageImageSerializer(instance=images, many=True)
         return Response(serializer.data)
+
 
 class HarzardsView(APIView):
     @permission_classes([IsAuthenticated])
-    @allowed_groups(['Manager','Admin'])
-    def post(self,request):
+    @allowed_groups(['Manager', 'Admin'])
+    def post(self, request):
         serializer = HazardLevelSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
+
     @permission_classes((IsAuthenticated))
-    def get(self,request):
+    def get(self, request):
         hazardLevels = HazardLevel.objects.all()
         serializer = HazardLevelSerializer(instance=hazardLevels, many=True)
         return Response(serializer.data)
