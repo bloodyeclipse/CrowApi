@@ -19,7 +19,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     Username and password are required. Other fields are optional.
     """
     # Addition/Alterations 1
-    uid = models.UUIDField(default=uuid.uuid4(), blank=False, unique=True, auto_created=True)
+    uid = models.UUIDField(default=uuid.uuid4, blank=False, unique=True, auto_created=True)
     username_validator = UnicodeUsernameValidator()
 
     username = models.CharField(
@@ -37,7 +37,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(_('last name'), max_length=150, blank=True)
     email = models.EmailField(_('email address'), blank=True, unique=True)
     gender = models.CharField(_("gender"), max_length=10, )
-    dob = models.DateField(default=datetime.datetime.now(), blank=True)
+    dob = models.DateField(default=datetime.datetime.now, blank=True)
     profile_img = models.ImageField(_('profile img'), upload_to="profile_img", default="avator.png")
     cover_img = models.ImageField(_('profile img'), upload_to="user_cover_img", default="cover.png")
     about_me = models.TextField()
